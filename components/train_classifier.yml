@@ -1,0 +1,22 @@
+name: Model Training
+description: Trains 
+
+inputs:
+  - {name: train_path, type: String}
+  - {name: valid_path, type: String}
+  - {name: target_name, type: String}
+  #add variable for model
+  - {name: num_boost_round, type: Interger}
+  #more variable
+outputs:
+  - {name: model_output_path, type: String}
+
+implementation:
+  container:
+    image: registry.onemount.com/$GitRepo/$(CURRENT_GIT_HASH)
+    command: [python, /app/src/main.py, train_classifier]
+    args: [{inputPath: train_path},
+            {inputPath: valid_path},
+            {inputValue: target_name},
+            --num_boost_round, {inputValue: num_boost_round},
+            --model_output_path, {outputPath: model_output_path}]

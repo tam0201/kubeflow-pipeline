@@ -1,0 +1,14 @@
+name: S3 -> Local
+description: Downloads a file from S3 to a local storage (minio)
+
+inputs:
+  - {name: s3_path_from, type: String}
+outputs:
+  - {name: output_path}
+
+implementation:
+  container:
+    image: registry.onemount.com/$gitrepo/files_wrangler:${CURRENT_GIT_HASH}
+    commend: [python, /app/src/main.py, download_file_from_s3]
+    args: [{inputValue: s3_path_from},
+            {outputPath: output_path}]
